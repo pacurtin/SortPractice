@@ -1,0 +1,93 @@
+<html lang="">
+
+    <head>
+        <title>Sorting</title>
+    </head>
+
+    <body>
+        <p>Open the console.</p>
+        <script>
+
+            /*
+                Best case: already sorted O(n)
+                Worst case: reverse order O(n^2)
+                Good for small arrays e.g. <50 members
+                Solves inplace so memory required is O(1)
+             */
+            function insertionSort(arr){
+                console.log("Insertion sort:");
+                for(let i=0;i<arr.length;i++){
+                    let num = arr[i];   // num is the array member we are currently trying to place
+                    let curr = i-1;    // curr is the position we are examining currently
+                    while(curr>=0 && arr[curr]>num){
+                        arr[curr+1]=arr[curr];  // move this member over one
+                        curr=curr-1;            // set curr to the next candidate position
+                    }
+                    arr[curr+1]=num;   // finally this is the insertion
+                    console.log(arr);
+                }
+                return arr;
+            }
+
+
+
+            /*
+                Max Heap:
+                Parent index: Math.floor(i/2)
+                Child 1 index: i*2
+                Child 2 index: (i*2)+1
+
+                Good for large arrays
+                Best and Worst case: time O(n log(n))
+                Solves inplace so memory required is O(1)
+             */
+
+            function heapSort(arr) {
+              let length = arr.length;
+              let parentNodeIndex = Math.floor((length/2)-1);  // formula for last parent node in heap
+              let lastElement = length-1;
+              // time to start comparing entries from the bottom up with heapify
+              while(parentNodeIndex>=0){
+                heapify(arr,length,parentNodeIndex);
+                parentNodeIndex--;
+              }
+              while(lastElement>=0){
+                [arr[lastElement],arr[0]] = [arr[0],arr[lastElement]];
+                heapify(arr,lastElement,0); // 0 because we just moved the smallest entry to the top
+                lastElement--;              // effectively shrinking array size by one each time
+              }
+              return arr;
+            }
+
+            // takes a parent node and checks it is larger than its children
+            // if parent value is not largest then it will rearrange the nodes
+            function heapify(arr,length,parentNode){
+                let largest = parentNode;        // these are indexes
+                let left = (parentNode*2)+1;
+                let right = left+1;
+                if (left<length && arr[left] > arr[largest]){
+                  largest = left;
+                }
+                if (right<length && arr[right] > arr[largest]){
+                  largest = right;
+                }
+                if (largest !== parentNode) {
+                  [arr[parentNode],arr[largest]]=[arr[largest],arr[parentNode]];
+                  heapify(arr,length,largest);
+                  /*    largest here refers to where the largest was before the swap.
+                        we will recursively drill down until we don't have to do a swap.
+                        once this is done we will return to working our way up the heap
+                        using the while loop in the heapSort method */
+                }
+                return arr;
+            }
+
+
+            let arr = [6, 5, 3, 1, 8, 7, 2, 4];
+            //insertionSort([...arr]);
+            console.log(heapSort([...arr]));
+
+        </script>
+    </body>
+
+</html>
