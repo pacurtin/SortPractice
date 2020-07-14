@@ -12,10 +12,9 @@
                 Best case: already sorted O(n)
                 Worst case: reverse order O(n^2)
                 Good for small arrays e.g. <50 members
-                Solves inplace so memory required is O(1)
+                Solves in-place so memory required is O(1)
              */
             function insertionSort(arr){
-                console.log("Insertion sort:");
                 for(let i=0;i<arr.length;i++){
                     let num = arr[i];   // num is the array member we are currently trying to place
                     let curr = i-1;    // curr is the position we are examining currently
@@ -24,7 +23,7 @@
                         curr=curr-1;            // set curr to the next candidate position
                     }
                     arr[curr+1]=num;   // finally this is the insertion
-                    console.log(arr);
+                    //console.log(arr);
                 }
                 return arr;
             }
@@ -39,7 +38,7 @@
 
                 Good for large arrays
                 Best and Worst case: time O(n log(n))
-                Solves inplace so memory required is O(1)
+                Solves in-place so memory required is O(1)
              */
 
             function heapSort(arr) {
@@ -83,9 +82,53 @@
             }
 
 
-            let arr = [6, 5, 3, 1, 8, 7, 2, 4];
-            //insertionSort([...arr]);
+            /*
+                Good for large arrays
+                Best case: time O(n log(n))
+                Worst case: time O(n^2)) Depends on balanced the partitions are
+                Solves in-place so memory required is O(1)
+            */
+            function partition(items, left, right) {
+              let pivot   = items[Math.floor((right + left) / 2)]; //middle element
+              let leftPointer       = left; //left pointer
+              let rightPointer       = right; //right pointer
+              while (leftPointer <= rightPointer) {
+                while (items[leftPointer] < pivot) {
+                  leftPointer++;
+                }
+                while (items[rightPointer] > pivot) {
+                  rightPointer--;
+                }
+                if (leftPointer <= rightPointer) {
+                  [items[leftPointer],items[rightPointer]] = [items[rightPointer],items[leftPointer]];
+                  leftPointer++;
+                  rightPointer--;
+                }
+              }
+              return leftPointer;
+            }
+
+            function quickSort(arr, left, right) {
+              let index;
+              if(arr.length > 1){
+                index = partition(arr, left, right);
+                if(left < index-1){
+                  quickSort(arr, left, index-1);
+                }
+                if(index < right){
+                  quickSort(arr, index, right);
+                }
+              }
+              return arr;
+            }
+
+            let arr = [5,3,7,6,2,9];
+            console.log("Insertion sort:");
+            console.log(insertionSort([...arr]));
+            console.log("Heap sort:");
             console.log(heapSort([...arr]));
+            console.log("Quick sort:");
+            console.log(quickSort([...arr],0, arr.length-1));
 
         </script>
     </body>
